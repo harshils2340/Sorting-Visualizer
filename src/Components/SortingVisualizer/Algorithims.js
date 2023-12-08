@@ -131,36 +131,58 @@ let isFinished = false;
 
 
 export async function QuickSort(array, start, end, setState) {
+  // Flag to check if the sorting process is finished
   isFinished = false;
+
+  // Set default values for start and end if not provided
   if (start === undefined) {
     start = 0;
     end = array.length - 1;
   }
+
+  // Base case: If the array has one element or is empty, it is already sorted
   if (start >= end) {
+    // Mark the sorting as finished and reset bars to null for visualization
     isFinished = true;
     setState({ array: [...array], barOne: null, barTwo: null });
     return array;
   }
+
+  // Store the initial start and end indices to use in recursive calls
   var rStart = start, rEnd = end;
+
+  // Choose a pivot element randomly within the given range
   var pivot = array[Math.floor(Math.random() * (end - start + 1) + start)];
+
+  // Partition the array and move elements around the pivot
   while (start < end) {
+    // Find the next element from the left that is greater than the pivot
     while (array[start] <= pivot) start++;
+
+    // Find the next element from the right that is smaller than the pivot
     while (array[end] > pivot) end--;
+
+    // Swap the elements found on the left and right sides of the pivot
     if (start < end) {
       var temp = array[start];
       array[start] = array[end];
       array[end] = temp;
     }
+
+    // If the sorting process is ongoing, update the state for visualization
     if (!isFinished) {
       setState({
         array: array,
         barOne: start,
         barTwo: end,
       });
-      // Wait for 100ms before updating the state again
+
+      // Wait for 50ms before updating the state again for better visualization
       await new Promise(resolve => setTimeout(resolve, 50));
     }
   }
+
+  // Recursively call QuickSort on the two partitions formed by the pivot
   QuickSort(array, rStart, start - 1, setState);
   QuickSort(array, start, rEnd, setState);
 }
