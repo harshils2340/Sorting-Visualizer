@@ -27,18 +27,20 @@ export default class SortingVisualizer extends React.Component {
   resetArray() {
     const array = [];
     const height = window.innerHeight
+    // randomizes height of bars for sorting
     for (let i = 0; i < this.state.numBars; i++) {
       array.push(Math.floor((Math.random()*0.8*height))+5);
     }
     this.setState({array, isSorted: false});
   }
-
+  // event handler to update the state of numBars once new value is obtained from the slider
   handleSliderChange = event => {
     this.setState({ numBars: event.target.value }, () => {
       this.resetArray();
   })}
 
 
+  // these async functions serve as initializers before the sorting process
 
   async BubbleSort() {
     this.setState({isSorting: true});
